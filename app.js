@@ -2,6 +2,10 @@ function damageFormula(max , min){
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function healRandom(max, min){
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
 const app = Vue.createApp({
     data(){
         return {
@@ -43,6 +47,18 @@ const app = Vue.createApp({
             const attackValue = damageFormula(25, 10)
 
             this.monsterHealth -= attackValue
+
+            this.attackPlayer();
+        },
+        healPlayer(){
+            this.round++;
+            const healValue = healRandom(20, 8);
+            if(this.playerHealth + healValue > 100){
+                this.playerHealth = 100
+            }else{
+                this.playerHealth += healValue;
+            }
+           
 
             this.attackPlayer();
         }
