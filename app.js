@@ -6,7 +6,9 @@ const app = Vue.createApp({
     data(){
         return {
             playerHealth: 100,
-            monsterHealth: 100
+            monsterHealth: 100,
+            round: 0,
+            specialAttackDisabled: false
         }
     },
     computed:{
@@ -15,10 +17,14 @@ const app = Vue.createApp({
         },
         updatePlayerBar(){
             return {width: this.playerHealth + '%'};
+        },
+        mayUseSpecialAttack(){
+            return this.round % 3 !== 0;
         }
     },
     methods: {
         attackMonster(){
+            this.round++
             //create attackValue with max and min for damage formula
            const attackValue = damageFormula(12, 5);
             // After attack monster health will be decreased
@@ -30,6 +36,15 @@ const app = Vue.createApp({
             const attackValue = damageFormula(15, 8);
 
             this.playerHealth -= attackValue;
+        },
+        specialAttackMonster(){
+            this.round++;
+
+            const attackValue = damageFormula(25, 10)
+
+            this.monsterHealth -= attackValue
+
+            this.attackPlayer();
         }
     }
 });
