@@ -13,7 +13,8 @@ const app = Vue.createApp({
             monsterHealth: 100,
             round: 0,
             specialAttackDisabled: false,
-            winner: null
+            winner: null,
+            logMessages: []
         }
     },
     watch: {
@@ -59,12 +60,16 @@ const app = Vue.createApp({
             // After attack monster health will be decreased
            this.monsterHealth -= attackValue;
             // And after this attack monster hit too so our health will be decreased too
+
+            this.addLogMessage('player', 'attack', attackValue)
            this.attackPlayer();
         },
         attackPlayer(){
             const attackValue = damageFormula(15, 8);
 
             this.playerHealth -= attackValue;
+
+            this.addLogMessage('monster', 'attack', attackValue)
         },
         specialAttackMonster(){
             this.round++;
@@ -72,6 +77,8 @@ const app = Vue.createApp({
             const attackValue = damageFormula(25, 10)
 
             this.monsterHealth -= attackValue
+
+            this.addLogMessage('player', 'special-attack', attackValue)
 
             this.attackPlayer();
         },
@@ -84,7 +91,7 @@ const app = Vue.createApp({
                 this.playerHealth += healValue;
             }
            
-
+            this.addLogMessage('player', 'heal', healValue)
             this.attackPlayer();
         },
         surrend(){
@@ -95,6 +102,14 @@ const app = Vue.createApp({
             this.monsterHealth = 100
             this.round = 0
             this.winner = null
+            this.logMessages = []
+        },
+        addLogMessage(who, what, value){
+            this.logMessages.unshift({
+                actionBy: who,
+                actionType: what,
+                actionValue: value
+            })
         }
     }
 });
