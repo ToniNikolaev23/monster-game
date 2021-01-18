@@ -9,6 +9,14 @@ const app = Vue.createApp({
             monsterHealth: 100
         }
     },
+    computed:{
+        updateMonsterBar(){
+            return {width: this.monsterHealth + '%'};
+        },
+        updatePlayerBar(){
+            return {width: this.playerHealth + '%'};
+        }
+    },
     methods: {
         attackMonster(){
             //create attackValue with max and min for damage formula
